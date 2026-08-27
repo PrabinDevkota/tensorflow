@@ -142,16 +142,15 @@ struct ScatterNdFunctor<CPUDevice, T, Index, OP, IXDIM> {
         // Don't break the loop here, but continue to update the rest because
         // the caller might ignore bad indices.
         continue;
-      } else {
-        auto input_chip =
-            Toutput.template chip<0>(static_cast<Eigen::DenseIndex>(i));
-        auto output_chip = input_chip;
-        auto update_chip = Tupdates.template chip<0>(loc);
-        update_executor::UpdateExecutor<
-            CPUDevice, decltype(input_chip), decltype(update_chip),
-            decltype(output_chip), OP>::Execute(d, input_chip, update_chip,
-                                                output_chip);
       }
+      auto input_chip =
+          Toutput.template chip<0>(static_cast<Eigen::DenseIndex>(i));
+      auto output_chip = input_chip;
+      auto update_chip = Tupdates.template chip<0>(loc);
+      update_executor::UpdateExecutor<
+          CPUDevice, decltype(input_chip), decltype(update_chip),
+          decltype(output_chip), OP>::Execute(d, input_chip, update_chip,
+                                              output_chip);
     }
 
     return error_loc;

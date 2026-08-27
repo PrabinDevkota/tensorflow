@@ -233,8 +233,7 @@ class StatefulScatterNdTest(test.TestCase):
 
   @test_util.run_in_graph_and_eager_modes
   def testRank3Int32IndicesUint8(self):
-    # IXDIM=3 + int32 indices, matching issue 126136's op path on a small
-    # tensor. The int32 stride-overflow case is covered in scatter_nd_op_test.
+    # CPU IXDIM=3 + int32 indices (issue 126136 op path) on a small tensor.
     ref = resource_variable_ops.ResourceVariable(
         array_ops.zeros([2, 3, 4], dtypes.uint8), dtype=dtypes.uint8)
     indices = constant_op.constant([[1, 0, 2]], dtype=dtypes.int32)

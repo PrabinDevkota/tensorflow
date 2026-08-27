@@ -5738,6 +5738,7 @@ tf_kernel_library(
         "-Wno-pass-failed",  # clang misses #pragma loop optimizations
     ]),
     gpu_srcs = [
+        "scatter_nd_index.h",
         "scatter_nd_op.h",
         "scatter_nd_op_gpu.cu.cc",
     ],
