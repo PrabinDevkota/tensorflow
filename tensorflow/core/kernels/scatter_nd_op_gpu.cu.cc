@@ -103,14 +103,15 @@ __global__ void ScatterNdOpKernel(
   auto update = LeftUpdate<T, op>();
 
   GPU_1D_KERNEL_LOOP(index, num_indices) {
-    Index i = 0;
+    int64_t i = 0;
     bool out_of_bounds = false;
 #pragma unroll
     for (int dim = 0; dim < IXDIM; ++dim) {
       int offset = (IXDIM * index + dim);
       const Index ix_d = internal::SubtleMustCopy(ldg(indices + offset));
       out_of_bounds |= !FastBoundsCheck(ix_d, output_shape_prefix[dim]);
-      i += ix_d * batch_strides[dim] * slice_size;
+      i += static_cast<int64_t>(ix_d) * batch_strides[dim] *
+           static_cast<int64_t>(slice_size);
     }
     if (!out_of_bounds) {
 #pragma unroll
